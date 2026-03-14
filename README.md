@@ -8,6 +8,8 @@ Build table-based email newsletter layouts you can copy and paste directly into 
 
 The editor allows you to visually build a newsletter and then copy Gmail-ready HTML.
 
+<img src="https://raw.githubusercontent.com/monapdx/easy-email-newsletters/refs/heads/main/add-links.gif">
+
 ---
 
 ## Features
