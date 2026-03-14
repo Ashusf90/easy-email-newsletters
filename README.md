@@ -2,6 +2,8 @@
 
 Build table-based email newsletter layouts you can copy and paste directly into Gmail.
 
+<img src="https://raw.githubusercontent.com/monapdx/easy-email-newsletters/refs/heads/main/screenshot.png">
+
 **Easy Email Newsletters** is a React + Vite tool for creating email-safe newsletter layouts using table structures that work reliably across email clients.
 
 The editor allows you to visually build a newsletter and then copy Gmail-ready HTML.
