@@ -25,6 +25,7 @@ export default function App() {
   });
 
   const savedRangeRef = useRef(null);
+  const savedCellIdRef = useRef(null);
 
   const selectedCell = useMemo(() => getCellById(template, selectedCellId), [template, selectedCellId]);
 
@@ -138,6 +139,7 @@ export default function App() {
 
   function hideLinkPopover() {
     savedRangeRef.current = null;
+    savedCellIdRef.current = null;
     setLinkPopover({
       visible: false,
       x: 0,
@@ -155,6 +157,12 @@ export default function App() {
     return `https://${trimmed}`;
   }
 
+  function getEditableFromNode(node) {
+    if (!node) return null;
+    const element = node.nodeType === Node.ELEMENT_NODE ? node : node.parentElement;
+    return element?.closest?.('[data-cell-id][contenteditable="true"]') || null;
+  }
+
   function handleSelectionChange() {
     const selection = window.getSelection();
 
@@ -165,21 +173,12 @@ export default function App() {
 
     const range = selection.getRangeAt(0);
     const rect = range.getBoundingClientRect();
-
-    const anchorNode = selection.anchorNode;
-    const element =
-      anchorNode?.nodeType === Node.ELEMENT_NODE
-        ? anchorNode
-        : anchorNode?.parentElement;
-
-    const editable = element?.closest?.('[data-cell-id][contenteditable="true"]');
+    const editable = getEditableFromNode(selection.anchorNode);
 
     if (!editable) {
       hideLinkPopover();
       return;
     }
-
-    savedRangeRef.current = range.cloneRange();
 
     const selectedText = selection.toString().trim();
     if (!selectedText) {
@@ -187,13 +186,19 @@ export default function App() {
       return;
     }
 
+    savedRangeRef.current = range.cloneRange();
+    savedCellIdRef.current = editable.dataset.cellId;
     setSelectedCellId(editable.dataset.cellId);
+
+    const anchor = getEditableFromNode(selection.anchorNode)?.querySelector?.('a');
+    const existingHref =
+      selection.anchorNode?.parentElement?.closest?.('a')?.getAttribute('href') || '';
 
     setLinkPopover({
       visible: true,
       x: rect.left + rect.width / 2,
       y: Math.max(40, rect.top - 12),
-      url: '',
+      url: existingHref || '',
     });
   }
 
@@ -207,8 +212,10 @@ export default function App() {
   }
 
   function handleApplyLink() {
-    if (!selectedCellId) {
-      setStatus('Select a text cell first.');
+    const cellId = savedCellIdRef.current || selectedCellId;
+
+    if (!cellId) {
+      setStatus('Select and highlight text first.');
       return;
     }
 
@@ -218,6 +225,14 @@ export default function App() {
       return;
     }
 
+    const editor = document.querySelector(`[data-cell-id="${cellId}"]`);
+    if (!editor) {
+      setStatus('Could not find the selected text cell.');
+      return;
+    }
+
+    editor.focus();
+
     const restored = restoreSavedRange();
     if (!restored) {
       setStatus('Could not restore selected text.');
@@ -226,11 +241,18 @@ export default function App() {
 
     document.execCommand('createLink', false, url);
 
-    const editor = document.querySelector(`[data-cell-id="${selectedCellId}"]`);
-    if (editor?.isContentEditable) {
-      updateCellHtml(selectedCellId, editor.innerHTML);
+    // Ensure links open in a new tab/window when exported or clicked.
+    const selection = window.getSelection();
+    const linkEl =
+      selection?.anchorNode?.parentElement?.closest?.('a') ||
+      selection?.focusNode?.parentElement?.closest?.('a');
+
+    if (linkEl) {
+      linkEl.setAttribute('target', '_blank');
+      linkEl.setAttribute('rel', 'noopener noreferrer');
     }
 
+    updateCellHtml(cellId, editor.innerHTML);
     hideLinkPopover();
     setStatus('Link added.');
   }
