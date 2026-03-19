@@ -9,7 +9,6 @@ Build table-based email newsletter layouts you can copy and paste directly into 
 The editor allows you to visually build a newsletter and then copy Gmail-ready HTML.
 
 ---
-
 ## Features
 
 - Table-based email templates
@@ -26,7 +25,6 @@ The editor allows you to visually build a newsletter and then copy Gmail-ready H
 - Nested tables for more advanced layouts
 
 ---
-
 ## Templates Included
 
 - Classic Newsletter
@@ -34,7 +32,6 @@ The editor allows you to visually build a newsletter and then copy Gmail-ready H
 - Blank Canvas
 
 ---
-
 ## Built With
 
 - React
@@ -43,7 +40,6 @@ The editor allows you to visually build a newsletter and then copy Gmail-ready H
 - GitHub Pages (for live demo)
 
 ---
-
 ## Live Demo
 
 Once GitHub Pages is enabled, the live demo will be available at:
@@ -51,7 +47,6 @@ Once GitHub Pages is enabled, the live demo will be available at:
 https://monapdx.github.io/easy-email-newsletters/
 
 ---
-
 ## Local Development
 
 Clone the repo and install dependencies:
@@ -60,17 +55,13 @@ npm install
 Run the development server:
 npm run dev 
 
-
 Build the production version:
 npm run build
-
 
 Preview the production build locally:
 npm run preview
 
-
 ---
-
 ## How It Works
 
 Email clients like Gmail still rely heavily on **table layouts and inline styles** rather than modern CSS layout systems like Flexbox or Grid.
@@ -85,7 +76,6 @@ This tool generates safe HTML using:
 The result can be **copied directly into Gmail's compose window**.
 
 ---
-
 ## Typical Workflow
 
 1. Choose a template
@@ -97,7 +87,11 @@ The result can be **copied directly into Gmail's compose window**.
 7. Paste it into Gmail
 
 ---
+## Example Exported Newsletter HTML
 
+For an example of what the exported HTML might look like, see the [example-exported-newsletter.html](example-exported-newsletter.html) file in the root of this repository.
+
+---
 ## Project Structure
 
 src/
@@ -107,9 +101,7 @@ utils/
 
 public/
 
-
 ---
-
 ## Roadmap
 
 Planned improvements:
@@ -124,7 +116,6 @@ Planned improvements:
 - Draft saving
 
 ---
-
 ## Notes
 
 - Web fonts are intentionally avoided for better email compatibility.
@@ -132,7 +123,6 @@ Planned improvements:
 - Uploaded images may increase HTML size because they are embedded.
 
 ---
-
 ## License
 
 MIT
