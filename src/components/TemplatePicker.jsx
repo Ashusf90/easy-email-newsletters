@@ -1,19 +1,22 @@
-import Panel from './Panel.jsx';
-import TemplateCard from './TemplateCard.jsx';
+import TemplateCard from "./TemplateCard";
 
-export default function TemplatePicker({ templates, activeTemplateId, onSelect }) {
+export default function TemplatePicker({ templates, onSelect }) {
   return (
-    <Panel title="Templates">
-      <div className="template-grid">
-        {templates.map((template) => (
-          <TemplateCard
-            key={template.id}
-            template={template}
-            active={template.id === activeTemplateId}
-            onClick={() => onSelect(template.id)}
-          />
-        ))}
-      </div>
-    </Panel>
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))",
+        gap: "20px",
+        padding: "20px",
+      }}
+    >
+      {templates.map((template) => (
+        <TemplateCard
+          key={template.id}
+          template={template}
+          onSelect={onSelect}
+        />
+      ))}
+    </div>
   );
 }
